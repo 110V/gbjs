@@ -145,7 +145,7 @@ export class Z80 {
         const h:Flag = (a & 0xF) === 0 ? 1 : 0;
         const c:Flag = this.getFlag(FLAG.c);
         this.setFlags(z, n, h, c);
-        return result & 0xFF; 
+        return result & 0xFF;
     }
 
     private sbc(a:number,b:number,carry:Flag) {
@@ -154,24 +154,38 @@ export class Z80 {
         const n:Flag = 1;
         const h:Flag =  (b & 0xF) + carry > (a & 0xF) ? 1 : 0;
         const c:Flag = (result < 0) ? 1 : 0
+        this.setFlags(z,n,h,c);
+        return result & 0xFF;
     }
 
     private sub(a: number, b: number) {
         return this.sbc(a, b, 0);
     }
 
-    
+    private ld(a:registry8,b:number) {
+
+    }
 
     //alu end
-    //
-
-
-
-
     
+    private bitu3r8(u3:number,r8:number) {
+        const result = u3 & r8;
+        const z:Flag = u3 === 0?1:0;
+        const n:Flag = 0;
+        const h:Flag = 0;
+        const c:Flag = this.getFlag(FLAG.c);
+        this.setFlags(z,n,h,c);
+        return result;
+    }
 
 
-    
+
+    private NOP() {
+        this.pc.set(this.pc.get()+1);
+        this._m_cycle+=1;
+    }
+
+
 
 
 }
