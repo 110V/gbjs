@@ -178,12 +178,34 @@ export class Z80 {
         return result;
     }
 
+    private rl(r8:number) {
+        let result = ( r8<<1 | this.getFlag(FLAG.c) ) & 0xFF;
+        const z:Flag = result === 0 ?1:0;
+        const n:Flag = 0;
+        const h:Flag = 0;
+        const c:Flag = (r8 & 0x80) !== 0 ?1:0; //0b10000000
+        this.setFlags(z, n, h, c);
+        return result;
+    }
+
+    private rlc(r8:number) {
+        let result = ( r8<<1 | ((r8 & 0x80) !== 0?1:0) ) & 0xFF;
+        const z:Flag = result === 0 ?1:0;
+        const n:Flag = 0;
+        const h:Flag = 0;
+        const c:Flag = (r8 & 0x80) !== 0 ?1:0; //0b10000000
+        this.setFlags(z, n, h, c);
+        return result;
+    }
+
 
 
     private NOP() {
         this.pc.set(this.pc.get()+1);
         this._m_cycle+=1;
     }
+
+
 
 
 
